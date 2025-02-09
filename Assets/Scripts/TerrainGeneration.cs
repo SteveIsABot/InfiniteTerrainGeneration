@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 
 public class TerrainGeneration : MonoBehaviour
@@ -7,6 +8,9 @@ public class TerrainGeneration : MonoBehaviour
 
     [SerializeField] public int zSize = 10;
     [SerializeField] public int xSize = 10;
+    [SerializeField] public float verticalScaleFactor = 2.0f;
+    [SerializeField] public float xZoomFactor = 0.3f;
+    [SerializeField] public float zZoomFactor = 0.3f;
     private List<Vector3> verticiesList = new List<Vector3>();
     private List<int> trianglePointList = new List<int>();
     private Mesh gridMesh;
@@ -14,18 +18,19 @@ public class TerrainGeneration : MonoBehaviour
     void Start()
     {
         gridMesh = gameObject.GetComponent<MeshFilter>().mesh;
-    }
-
-    void Update()
-    {
         updateMesh();
     }
 
     void createVertices(){
 
-        for(int z = 0; z <= zSize; z++){
-            for(int x = 0; x <= xSize; x++){
-                verticiesList.Add(new Vector3(x, 0, z));
+        for(int z = -(zSize / 2); z <= (zSize / 2); z++){
+            for(int x = -(xSize / 2); x <= (xSize / 2); x++){
+
+                float originX = (transform.position.x + x) * xZoomFactor;
+                float originZ = (transform.position.z + z) * zZoomFactor;
+                float y = (Mathf.PerlinNoise(originX, originZ) * verticalScaleFactor) - (verticalScaleFactor / 2);
+
+                verticiesList.Add(new Vector3(x, y, z));
             }
         }
 
