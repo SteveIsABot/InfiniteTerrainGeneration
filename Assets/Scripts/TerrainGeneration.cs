@@ -71,10 +71,10 @@ public class TerrainGeneration : MonoBehaviour
 
         Gizmos.color = Color.red;
         for(int i = 0; i < verticiesList.Count; i++){
-            Gizmos.DrawSphere(verticiesList[i], 0.1f);
+            Gizmos.DrawSphere(transform.position + verticiesList[i], 0.1f);
         }
         
         Gizmos.color = Color.black;
-        Gizmos.DrawWireMesh(gridMesh);
+        Gizmos.DrawWireMesh(gridMesh, transform.position);
     }
 }
