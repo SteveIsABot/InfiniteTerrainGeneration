@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 145e54efada273e4b9f2187dc86462a4, type: 2}
+  - {fileID: 2100000, guid: c876f8efb1dd1be4dad33276015a5c75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,6 +98,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zSize: 10
   xSize: 10
-  verticalScaleFactor: 2
-  xZoomFactor: 0.25
-  zZoomFactor: 0.25
+  verticalScaleFactor: 4
+  xZoomFactor: 0.2
+  zZoomFactor: 0.2
+  colourGraident:
+    serializedVersion: 2
+    key0: {r: 0, g: 0.68860483, b: 1, a: 1}
+    key1: {r: 1, g: 0.9982565, b: 0, a: 1}
+    key2: {r: 0.38679248, g: 0.15640149, b: 0, a: 0}
+    key3: {r: 0.07086587, g: 1, b: 0, a: 0}
+    key4: {r: 0.07086587, g: 1, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 18697
+    ctime1: 24287
+    ctime2: 32768
+    ctime3: 42598
+    ctime4: 49151
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  useTex: 0
