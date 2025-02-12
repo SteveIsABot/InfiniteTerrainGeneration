@@ -506,10 +506,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78b51c0d3eed55f42b7ce601d6865f83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainSpeed: 10
-  shiftAdd: 12
-  maxShift: 100
-  camSens: 0.1
+  mainSpeed: 1.5
+  speedBooster: 0.5
+  maxSpeed: 10
+  camSens: 0.5
 --- !u!4 &1205329991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3915316719734584468, guid: 9ddac0e1f0572ea419202df25e2db81c, type: 3}
