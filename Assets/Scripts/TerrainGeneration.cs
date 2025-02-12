@@ -25,7 +25,7 @@ public class TerrainGeneration : MonoBehaviour
         gridMat = gameObject.GetComponent<MeshRenderer>().material;
 
         updateMesh();
-        //updateMat();
+        updateMat();
     }
 
     void createVertices(){
@@ -73,7 +73,8 @@ public class TerrainGeneration : MonoBehaviour
     }
     
     void updateMat(){
-        gridMat.SetFloat("MaxHeight", verticalScaleFactor);
+        gridMat.SetFloat("minHeight", -(verticalScaleFactor/2.0f));
+        gridMat.SetFloat("maxHeight", verticalScaleFactor/2.0f);
     }
 
     private void OnDrawGizmos(){

@@ -14,6 +14,7 @@ Shader "Custom/TerrainShader"
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
+        float minHeight;
         float maxHeight;
 
         struct Input
@@ -22,12 +23,12 @@ Shader "Custom/TerrainShader"
         };
 
         float inverseLerp(float min, float max, float value) {
-            return((value - max) / (max - min));
+            return saturate((value - min) / (max - min));
         }
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            float ratio = inverseLerp(0.0f, maxHeight, IN.worldPos.y);
+            float ratio = inverseLerp(minHeight, maxHeight, IN.worldPos.y);
             o.Albedo = ratio;
         }
         ENDCG
