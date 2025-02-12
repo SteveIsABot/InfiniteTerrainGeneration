@@ -17,6 +17,7 @@ public class TerrainGeneration : MonoBehaviour
 
     private List<Vector3> verticiesList = new List<Vector3>();
     private List<int> trianglePointList = new List<int>();
+    private BoxCollider AABB;
 
     private Mesh gridMesh;
     private Material gridMat;
@@ -26,6 +27,9 @@ public class TerrainGeneration : MonoBehaviour
     {
         gridMesh = gameObject.GetComponent<MeshFilter>().mesh;
         gridMat = gameObject.GetComponent<MeshRenderer>().material;
+        AABB = gameObject.GetComponent<BoxCollider>();
+
+        AABB.size = new Vector3(xSize, verticalScaleFactor, zSize);
 
         updateMesh();
         updateMat();
