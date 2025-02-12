@@ -11,14 +11,21 @@ public class TerrainGeneration : MonoBehaviour
     [SerializeField] public float verticalScaleFactor = 2.0f;
     [SerializeField] public float xZoomFactor = 0.3f;
     [SerializeField] public float zZoomFactor = 0.3f;
+
     private List<Vector3> verticiesList = new List<Vector3>();
     private List<int> trianglePointList = new List<int>();
+    private List<Color> colourList = new List<Color>();
+
     private Mesh gridMesh;
+    private Material gridMat;
 
     void Start()
     {
         gridMesh = gameObject.GetComponent<MeshFilter>().mesh;
+        gridMat = gameObject.GetComponent<MeshRenderer>().material;
+
         updateMesh();
+        //updateMat();
     }
 
     void createVertices(){
@@ -30,6 +37,7 @@ public class TerrainGeneration : MonoBehaviour
                 float originZ = (transform.position.z + z) * zZoomFactor;
                 float y = (Mathf.PerlinNoise(originX, originZ) * verticalScaleFactor) - (verticalScaleFactor / 2);
 
+                colourList.Add(Color.black);
                 verticiesList.Add(new Vector3(x, y, z));
             }
         }
@@ -54,17 +62,18 @@ public class TerrainGeneration : MonoBehaviour
     
     void updateMesh(){
 
-        gridMesh.Clear();
-        verticiesList.Clear();
-        trianglePointList.Clear();
-
         createVertices();
         createTriangles();
 
         gridMesh.vertices = verticiesList.ToArray();
         gridMesh.triangles = trianglePointList.ToArray();
+        gridMesh.colors = colourList.ToArray();
 
         gridMesh.RecalculateNormals();
+    }
+    
+    void updateMat(){
+        gridMat.SetFloat("MaxHeight", verticalScaleFactor);
     }
 
     private void OnDrawGizmos(){
