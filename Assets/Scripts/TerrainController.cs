@@ -7,7 +7,8 @@ using UnityEngine;
 public class TerrainController : MonoBehaviour
 {
     [SerializeField] public GameObject terrainGrid;
-    [SerializeField] public int maxGrids = 200;
+    [SerializeField] public int maxActiveGrids = 200;
+    [SerializeField] public int maxNonActiveGrids = 100;
     public List<GameObject> activeTerrainList = new List<GameObject>();
     public List<GameObject> nonActiveTerrainList = new List<GameObject>();
 
@@ -34,8 +35,6 @@ public class TerrainController : MonoBehaviour
         foreach(Transform child in transform.GetComponentsInChildren<Transform>()) {
             
             if(child.name != "TerrainManager") {
-                
-                Debug.Log(child.gameObject.GetComponent<Renderer>().enabled);
 
                 if(child.gameObject.GetComponent<Renderer>().enabled) { 
                     activeTerrainList.Add(child.gameObject);
@@ -47,19 +46,30 @@ public class TerrainController : MonoBehaviour
         }
     }
 
-    void SortGrids() {
+    void SortGrids(List<GameObject> list) {
 
-        activeTerrainList.Sort((a, b) =>
-            (a.transform.position - cameraObj.transform.position).sqrMagnitude.CompareTo((b.transform.position - cameraObj.transform.position).sqrMagnitude)
-        );
-
-        nonActiveTerrainList.Sort((a, b) =>
+        list.Sort((a, b) =>
             (a.transform.position - cameraObj.transform.position).sqrMagnitude.CompareTo((b.transform.position - cameraObj.transform.position).sqrMagnitude)
         );
     }
 
+    void DeleteGrids() {
+
+        Debug.Log(nonActiveTerrainList.Count);
+
+        for(int i = nonActiveTerrainList.Count - 1; i > maxNonActiveGrids; i--) {
+            GameObject grid = nonActiveTerrainList[i];
+            nonActiveTerrainList.RemoveAt(i);
+            Destroy(grid);
+        }
+
+    }
+
     void Update() {
         UpdateList();
-        SortGrids();
+        SortGrids(activeTerrainList);
+        SortGrids(nonActiveTerrainList);
+
+        DeleteGrids();
     }
 }
