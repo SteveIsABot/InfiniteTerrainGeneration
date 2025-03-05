@@ -27,6 +27,10 @@ public class TerrainController : MonoBehaviour
         activeTerrainList.Add(copy);
     }
 
+    void CreateNewGrids(List<Vector3> positionsToSpawn) {
+        foreach(Vector3 pos in positionsToSpawn) CreateNewGrid(pos);
+    }
+
     void UpdateList() {
 
         activeTerrainList.Clear();
@@ -62,6 +66,16 @@ public class TerrainController : MonoBehaviour
             nonActiveTerrainList.RemoveAt(i);
             Destroy(grid);
         }
+
+    }
+
+    void SpawnGridAlgorithm() {
+
+        // Check if grid underneth camera - if not place grid underneth camera
+        // Find new target to spawn grid
+        // Check if target in camera's view
+        // Store pos into a list
+        // Spawn serveral grids that was in the list
 
     }
 
