@@ -32,10 +32,17 @@ public class TerrainController : MonoBehaviour
         nonActiveTerrainList.Clear();
 
         foreach(Transform child in transform.GetComponentsInChildren<Transform>()) {
-            if(child.gameObject.GetComponent<Renderer>().enabled) {
-                activeTerrainList.Add(child.gameObject);
-            } else {
-                nonActiveTerrainList.Add(child.gameObject);
+            
+            if(child.name != "TerrainManager") {
+                
+                Debug.Log(child.gameObject.GetComponent<Renderer>().enabled);
+
+                if(child.gameObject.GetComponent<Renderer>().enabled) { 
+                    activeTerrainList.Add(child.gameObject);
+                } else {
+                    nonActiveTerrainList.Add(child.gameObject);
+                }
+
             }
         }
     }

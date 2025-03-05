@@ -36,8 +36,7 @@ public class TerrainGeneration : MonoBehaviour
     }
 
     void Update() { 
-        updateMesh();
-        updateMat();
+        inCamera();
     }
 
     void createVertices() {
@@ -115,5 +114,10 @@ public class TerrainGeneration : MonoBehaviour
         
         Gizmos.color = Color.black;
         Gizmos.DrawWireMesh(gridMesh, transform.position);
+    }
+
+    void inCamera() {
+        Plane[] frustrumPlanes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+        GetComponent<Renderer>().enabled = GeometryUtility.TestPlanesAABB(frustrumPlanes, AABB.bounds) ? true : false;
     }
 }
