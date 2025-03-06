@@ -12,15 +12,18 @@ public class CameraMovement : MonoBehaviour
     private float yaw = 0;
     private float pitch = 0;
     private float currentSpeed = 5.0f;
+    private bool speedBoosterToggle = false;
 
     void Start() {
         currentSpeed = mainSpeed;
     }
+
     void Update() {
 
         pitch += Input.GetAxis("Mouse X") * camSens * 5.0f;
         yaw -= Input.GetAxis("Mouse Y") * camSens * 5.0f;
-        currentSpeed = Input.GetKey(KeyCode.LeftControl) ? currentSpeed += speedBooster : currentSpeed = mainSpeed;
+        speedBoosterToggle = Input.GetKey(KeyCode.LeftControl) ? !speedBoosterToggle : speedBoosterToggle;
+        currentSpeed = speedBoosterToggle ? currentSpeed += speedBooster : currentSpeed = mainSpeed;
 
         yaw = Mathf.Clamp(yaw, -85.0f, 85.0f);
         currentSpeed = Mathf.Clamp(currentSpeed, mainSpeed, maxSpeed);
