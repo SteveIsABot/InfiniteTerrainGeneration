@@ -71,32 +71,35 @@ public class TerrainController : MonoBehaviour
     void SpawnGridAlgorithm() {
 
         Vector3 cameraPos = cameraObj.transform.position;
-        
-        Vector3 targetPos = new Vector3();
-        targetPos.x = Mathf.Round(cameraPos.x / 10) * 10;
-        targetPos.z = Mathf.Round(cameraPos.z / 10) * 10;
+        Vector3 targetPos = cameraPos;
 
         List<Vector3> spawnPlaces = new List<Vector3>();
 
         while(activeTerrainList.Count < maxActiveGrids) {
 
-            targetPos.z += 10;
+            targetPos += 10 * cameraObj.transform.forward;
+            targetPos.x = Mathf.Round(targetPos.x / 10) * 10;
+            targetPos.z = Mathf.Round(targetPos.z / 10) * 10;
+            targetPos.y = 0;
+
             Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
 
             if(overlappingCollider.Length == 0) { spawnPlaces.Add(targetPos); }
             if(spawnPlaces.Count >= 10) break;
         }
 
-        CreateNewGrids(spawnPlaces);
+        if(spawnPlaces.Count > 0) CreateNewGrids(spawnPlaces);
 
     }
 
     void Update() {
+        
         UpdateList();
         SortGrids(activeTerrainList);
         SortGrids(nonActiveTerrainList);
         
-        SpawnGridAlgorithm();
+        float camRotationX = Mathf.Abs(cameraObj.transform.rotation.eulerAngles.x) % 360.0f;
+        if(camRotationX < 35.0f) { SpawnGridAlgorithm(); }
 
         DeleteGrids();
     }
