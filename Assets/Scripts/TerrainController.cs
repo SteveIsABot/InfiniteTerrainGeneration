@@ -19,7 +19,8 @@ public class TerrainController : MonoBehaviour
         cameraObj = GameObject.Find("Main Camera");
         Vector3 originPos = cameraObj.transform.position;
         originPos.y = 0;
-        //CreateNewGrid(originPos);
+        
+        CreateNewGrid(originPos);
     }
 
     void CreateNewGrid(Vector3 pos) {
@@ -59,8 +60,6 @@ public class TerrainController : MonoBehaviour
 
     void DeleteGrids() {
 
-        Debug.Log(nonActiveTerrainList.Count);
-
         for(int i = nonActiveTerrainList.Count - 1; i > maxNonActiveGrids; i--) {
             GameObject grid = nonActiveTerrainList[i];
             nonActiveTerrainList.RemoveAt(i);
@@ -71,11 +70,24 @@ public class TerrainController : MonoBehaviour
 
     void SpawnGridAlgorithm() {
 
-        // Check if grid underneth camera - if not place grid underneth camera
-        // Find new target to spawn grid
-        // Check if target in camera's view
-        // Store pos into a list
-        // Spawn serveral grids that was in the list
+        Vector3 cameraPos = cameraObj.transform.position;
+        
+        Vector3 targetPos = new Vector3();
+        targetPos.x = Mathf.Round(cameraPos.x / 10) * 10;
+        targetPos.z = Mathf.Round(cameraPos.z / 10) * 10;
+
+        List<Vector3> spawnPlaces = new List<Vector3>();
+
+        while(activeTerrainList.Count < maxActiveGrids) {
+
+            targetPos.z += 10;
+            Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
+
+            if(overlappingCollider.Length == 0) { spawnPlaces.Add(targetPos); }
+            if(spawnPlaces.Count >= 10) break;
+        }
+
+        CreateNewGrids(spawnPlaces);
 
     }
 
@@ -83,6 +95,8 @@ public class TerrainController : MonoBehaviour
         UpdateList();
         SortGrids(activeTerrainList);
         SortGrids(nonActiveTerrainList);
+        
+        SpawnGridAlgorithm();
 
         DeleteGrids();
     }
