@@ -84,18 +84,21 @@ public class TerrainController : MonoBehaviour
 
         while(activeTerrainList.Count < maxActiveGrids) {
 
-            /*
-            Need to make temp position for furthest away grid in fornt of camera
-            targetPos += 10 * cameraObj.transform.forward;
-            targetPos = roundTargetVector(targetPos, 10.0f);
-            */
+            Vector3 currentCenterGrid = targetPos;
+            Vector3 inView = Camera.main.WorldToViewportPoint(targetPos);
+            
+            if(inView.x > 0 && inView.x < 1 && inView.y > 0 && inView.y < 1 && inView.z > 0) {
+                
+                Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
+                if(overlappingCollider.Length <= 0) { spawnPlaces.Add(targetPos); }
 
-            //Left side generation
+            }
+
             while(spawnPlaces.Count < 10) {
 
                 targetPos -= 10 * cameraObj.transform.right;
                 targetPos = roundTargetVector(targetPos, 10.0f);
-                Vector3 inView = Camera.main.WorldToViewportPoint(targetPos);
+                inView = Camera.main.WorldToViewportPoint(targetPos);
 
                 if(inView.x > 0 && inView.x < 1 && inView.y > 0 && inView.y < 1 && inView.z > 0) {
 
@@ -108,12 +111,13 @@ public class TerrainController : MonoBehaviour
 
             }
 
-            //Right side generation
+            targetPos = currentCenterGrid;
+
             while(spawnPlaces.Count < 10) {
 
                 targetPos += 10 * cameraObj.transform.right;
                 targetPos = roundTargetVector(targetPos, 10.0f);
-                Vector3 inView = Camera.main.WorldToViewportPoint(targetPos);
+                inView = Camera.main.WorldToViewportPoint(targetPos);
 
                 if(inView.x > 0 && inView.x < 1 && inView.y > 0 && inView.y < 1 && inView.z > 0) {
 
@@ -126,7 +130,12 @@ public class TerrainController : MonoBehaviour
 
             }
 
-            break;
+            targetPos = currentCenterGrid;
+            targetPos += 10 * cameraObj.transform.forward;
+            targetPos = roundTargetVector(targetPos, 10.0f);
+            
+            if(spawnPlaces.Count > 0) { break; }
+
         }
 
         if(spawnPlaces.Count > 0) CreateNewGrids(spawnPlaces);
@@ -139,7 +148,7 @@ public class TerrainController : MonoBehaviour
         SortGrids(nonActiveTerrainList);
         
         float camRotationX = Mathf.Abs(cameraObj.transform.rotation.eulerAngles.x) % 360.0f;
-        if(camRotationX < 35.0f) { SpawnGridAlgorithm(); }
+        if(camRotationX < 30.0f) { SpawnGridAlgorithm(); }
 
         DeleteGrids();
     }
