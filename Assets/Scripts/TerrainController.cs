@@ -68,28 +68,68 @@ public class TerrainController : MonoBehaviour
 
     }
 
+    Vector3 roundTargetVector(Vector3 target, float gridSize) {
+        target.x = Mathf.Round(target.x / gridSize) * gridSize;
+        target.z = Mathf.Round(target.z / gridSize) * gridSize;
+        target.y = 0;
+        return target;
+    }
+
     void SpawnGridAlgorithm() {
 
         Vector3 cameraPos = cameraObj.transform.position;
-        Vector3 targetPos = cameraPos;
+        Vector3 targetPos = roundTargetVector(cameraPos, 10.0f);
 
         List<Vector3> spawnPlaces = new List<Vector3>();
 
         while(activeTerrainList.Count < maxActiveGrids) {
 
+            /*
+            Need to make temp position for furthest away grid in fornt of camera
             targetPos += 10 * cameraObj.transform.forward;
-            targetPos.x = Mathf.Round(targetPos.x / 10) * 10;
-            targetPos.z = Mathf.Round(targetPos.z / 10) * 10;
-            targetPos.y = 0;
+            targetPos = roundTargetVector(targetPos, 10.0f);
+            */
 
-            Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
+            //Left side generation
+            while(spawnPlaces.Count < 10) {
 
-            if(overlappingCollider.Length == 0) { spawnPlaces.Add(targetPos); }
-            if(spawnPlaces.Count >= 10) break;
+                targetPos -= 10 * cameraObj.transform.right;
+                targetPos = roundTargetVector(targetPos, 10.0f);
+                Vector3 inView = Camera.main.WorldToViewportPoint(targetPos);
+
+                if(inView.x > 0 && inView.x < 1 && inView.y > 0 && inView.y < 1 && inView.z > 0) {
+
+                    Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
+                    if(overlappingCollider.Length <= 0) { spawnPlaces.Add(targetPos); }
+
+                } else {
+                    break;
+                }
+
+            }
+
+            //Right side generation
+            while(spawnPlaces.Count < 10) {
+
+                targetPos += 10 * cameraObj.transform.right;
+                targetPos = roundTargetVector(targetPos, 10.0f);
+                Vector3 inView = Camera.main.WorldToViewportPoint(targetPos);
+
+                if(inView.x > 0 && inView.x < 1 && inView.y > 0 && inView.y < 1 && inView.z > 0) {
+
+                    Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
+                    if(overlappingCollider.Length <= 0) { spawnPlaces.Add(targetPos); }
+
+                } else {
+                    break;
+                }
+
+            }
+
+            break;
         }
 
         if(spawnPlaces.Count > 0) CreateNewGrids(spawnPlaces);
-
     }
 
     void Update() {
