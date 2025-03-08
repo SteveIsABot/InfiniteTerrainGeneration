@@ -75,6 +75,28 @@ public class TerrainController : MonoBehaviour
         return target;
     }
 
+    bool inViewChecker(Vector3 pos) {
+        Vector3 viewCheck = Camera.main.WorldToViewportPoint(pos);
+        return viewCheck.x > 0 && viewCheck.x < 1 && viewCheck.y > 0 && viewCheck.y < 1 && viewCheck.z > 0;
+    }
+
+    List<Vector3> createMultiTarget(Vector3 target) {
+
+        float minTargetX = Mathf.FloorToInt(target.x / 10.0f) * 10f;
+        float maxTargetX = Mathf.CeilToInt(target.x / 10.0f) * 10f;
+        float minTargetZ = Mathf.FloorToInt(target.z / 10.0f) * 10f;
+        float maxTargetZ = Mathf.CeilToInt(target.z / 10.0f) * 10f;
+
+        List<Vector3> result = new List<Vector3> {
+            new Vector3(minTargetX, 0, minTargetZ),
+            new Vector3(minTargetX, 0, maxTargetZ),
+            new Vector3(maxTargetX, 0, minTargetZ),
+            new Vector3(maxTargetX, 0, maxTargetZ)
+        };
+
+        return result;
+    }
+
     void SpawnGridAlgorithm() {
 
         Vector3 cameraPos = cameraObj.transform.position;
@@ -85,30 +107,29 @@ public class TerrainController : MonoBehaviour
         while(activeTerrainList.Count < maxActiveGrids) {
 
             Vector3 currentCenterGrid = targetPos;
-            Vector3 inView = Camera.main.WorldToViewportPoint(targetPos);
             
-            if(inView.x > 0 && inView.x < 1 && inView.y > 0 && inView.y < 1 && inView.z > 0) {
-                
+            if(inViewChecker(targetPos)) {
                 Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
                 if(overlappingCollider.Length <= 0) { spawnPlaces.Add(targetPos); }
-
             }
 
             while(spawnPlaces.Count < 10) {
 
                 targetPos -= 10 * cameraObj.transform.right;
-                targetPos = roundTargetVector(targetPos, 10.0f);
-                inView = Camera.main.WorldToViewportPoint(targetPos);
+                List<Vector3> multiTargetPos = createMultiTarget(targetPos);
+                bool stillInView = true;
 
-                if(inView.x > 0 && inView.x < 1 && inView.y > 0 && inView.y < 1 && inView.z > 0) {
-
-                    Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
-                    if(overlappingCollider.Length <= 0) { spawnPlaces.Add(targetPos); }
-
-                } else {
-                    break;
+                foreach(Vector3 pos in multiTargetPos) {
+                    if(inViewChecker(pos)) {
+                        Collider[] overlappingCollider = Physics.OverlapBox(pos, new Vector3(1f, 2.0f, 1f));
+                        if(overlappingCollider.Length <= 0) { spawnPlaces.Add(pos); }
+                        stillInView = true;
+                    } else {
+                        stillInView = false;
+                    }
                 }
 
+                if(!stillInView) { break; }
             }
 
             targetPos = currentCenterGrid;
@@ -116,17 +137,20 @@ public class TerrainController : MonoBehaviour
             while(spawnPlaces.Count < 10) {
 
                 targetPos += 10 * cameraObj.transform.right;
-                targetPos = roundTargetVector(targetPos, 10.0f);
-                inView = Camera.main.WorldToViewportPoint(targetPos);
+                List<Vector3> multiTargetPos = createMultiTarget(targetPos);
+                bool stillInView = true;
 
-                if(inView.x > 0 && inView.x < 1 && inView.y > 0 && inView.y < 1 && inView.z > 0) {
-
-                    Collider[] overlappingCollider = Physics.OverlapBox(targetPos, new Vector3(1f, 2.0f, 1f));
-                    if(overlappingCollider.Length <= 0) { spawnPlaces.Add(targetPos); }
-
-                } else {
-                    break;
+                foreach(Vector3 pos in multiTargetPos) {
+                    if(inViewChecker(pos)) {
+                        Collider[] overlappingCollider = Physics.OverlapBox(pos, new Vector3(1f, 2.0f, 1f));
+                        if(overlappingCollider.Length <= 0) { spawnPlaces.Add(pos); }
+                        stillInView = true;
+                    } else {
+                        stillInView = false;
+                    }
                 }
+
+                if(!stillInView) { break; }
 
             }
 
