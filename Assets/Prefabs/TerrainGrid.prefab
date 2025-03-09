@@ -144,4 +144,6 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
+  textureMat: {fileID: 2100000, guid: 145e54efada273e4b9f2187dc86462a4, type: 2}
+  colourMat: {fileID: 2100000, guid: c876f8efb1dd1be4dad33276015a5c75, type: 2}
   useTex: 0

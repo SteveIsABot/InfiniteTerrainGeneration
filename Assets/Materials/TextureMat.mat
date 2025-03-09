@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ColourTerrainMat
-  m_Shader: {fileID: 4800000, guid: 924161ef320d1b045b7e42381740c7de, type: 3}
+  m_Name: TextureMat
+  m_Shader: {fileID: 4800000, guid: af01efbca2acc7e4fb09e78c1810e233, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -59,6 +59,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - dirtTexture:
+        m_Texture: {fileID: 2800000, guid: 73ef51dac22b88a4583cc05146b3a6cf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - grassTexture:
+        m_Texture: {fileID: 2800000, guid: 233ae0ab4e025074eb793d1661070e11, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - sandTexture:
+        m_Texture: {fileID: 2800000, guid: 88602d4bc19af354393553472dde2ae9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - waterTexture:
+        m_Texture: {fileID: 2800000, guid: 55ccab28e6476da45a5cc877db6a2a7f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
@@ -77,7 +93,11 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - dirtTextureScale: 3
+    - grassTextureScale: 3
+    - sandTextureScale: 3
+    - waterTextureScale: 3
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.5377358, g: 0.42866677, b: 0.42866677, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

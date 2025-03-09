@@ -13,6 +13,8 @@ public class TerrainGeneration : MonoBehaviour
     [Range(0, 1)] [SerializeField] public float zZoomFactor = 0.3f;
 
     public Gradient colourGraident;
+    [SerializeField] public Material textureMat;
+    [SerializeField] public Material colourMat;
     [SerializeField] public bool useTex;
 
     private List<Vector3> verticiesList = new List<Vector3>();
@@ -23,10 +25,12 @@ public class TerrainGeneration : MonoBehaviour
     private Material gridMat;
     private Texture2D colourGradientTex;
 
-    void Start()
-    {
+    void Start() {
+
+        gameObject.GetComponent<Renderer>().material = useTex ? textureMat : colourMat;
+
         gridMesh = gameObject.GetComponent<MeshFilter>().mesh;
-        gridMat = gameObject.GetComponent<MeshRenderer>().material;
+        gridMat = gameObject.GetComponent<Renderer>().material;
         AABB = gameObject.GetComponent<BoxCollider>();
 
         AABB.size = new Vector3(xSize, verticalScaleFactor, zSize);
@@ -35,9 +39,7 @@ public class TerrainGeneration : MonoBehaviour
         updateMat();
     }
 
-    void Update() { 
-        inCamera();
-    }
+    void Update() { inCamera(); }
 
     void createVertices() {
 
