@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3915316719734584474
 MeshFilter:
@@ -146,4 +146,19 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   textureMat: {fileID: 2100000, guid: 145e54efada273e4b9f2187dc86462a4, type: 2}
   colourMat: {fileID: 2100000, guid: c876f8efb1dd1be4dad33276015a5c75, type: 2}
-  useTex: 0
+  useTex: 1
+  baseStartHeights:
+  - 0
+  - 0.3
+  - 0.37
+  - 0.45
+  baseBlends:
+  - 0
+  - 0.05
+  - 0.03
+  - 0.1
+  texScales:
+  - 1.67
+  - 3.42
+  - 13.55
+  - 5

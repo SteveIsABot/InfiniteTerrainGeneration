@@ -2,16 +2,9 @@ Shader "Custom/TerrainShader"
 {
     Properties {
         waterTexture("Water Tex", 2D) = "white"{}
-        waterTextureScale("Scale", float) = 1
-
         sandTexture("Sand Tex", 2D) = "yellow"{}
-        sandTextureScale("Scale", float) = 1
-
         dirtTexture("Dirt Tex", 2D) = "brown"{}
-        dirtTextureScale("Scale", float) = 1
-
         grassTexture("Grass Tex", 2D) = "green"{}
-        grassTextureScale("Scale", float) = 1
     }
 
     SubShader
@@ -25,18 +18,19 @@ Shader "Custom/TerrainShader"
         // Use shader model 3.0 target, to get nicer looking lighting
         #pragma target 3.0
 
+        const static float epsilon = 1E-4;
+
         float minHeight;
         float maxHeight;
+
+        float baseStartHeights[4];
+        float baseBlends[4];
+        float texScales[4];
 
         sampler2D waterTexture;
         sampler2D sandTexture;
         sampler2D dirtTexture;
         sampler2D grassTexture;
-
-        float waterTextureScale;
-        float sandTextureScale;
-        float dirtTextureScale;
-        float grassTextureScale;
 
         struct Input {
             float3 worldPos;
@@ -47,16 +41,53 @@ Shader "Custom/TerrainShader"
             return saturate((value - min) / (max - min));
         }
 
-        void surf (Input IN, inout SurfaceOutputStandard o)
-        {
-            float3 scaledWorldPos = IN.worldPos / waterTextureScale;
+        float3 triplanar(float3 worldPos, float scale, float3 blendedAxis, int selectTex) {
+            
+            float3 scaledWorldPos = worldPos / scale;
+            float3 xProjection;
+            float3 yProjection;
+            float3 zProjection;
+            
+            switch(selectTex) {
+                case 1:
+                xProjection = tex2D(sandTexture, scaledWorldPos.yz) * blendedAxis.x;
+                yProjection = tex2D(sandTexture, scaledWorldPos.xz) * blendedAxis.y;
+                zProjection = tex2D(sandTexture, scaledWorldPos.xy) * blendedAxis.z;
+                break;
+
+                case 2:
+                xProjection = tex2D(dirtTexture, scaledWorldPos.yz) * blendedAxis.x;
+                yProjection = tex2D(dirtTexture, scaledWorldPos.xz) * blendedAxis.y;
+                zProjection = tex2D(dirtTexture, scaledWorldPos.xy) * blendedAxis.z;
+                break;
+
+                case 3:
+                xProjection = tex2D(grassTexture, scaledWorldPos.yz) * blendedAxis.x;
+                yProjection = tex2D(grassTexture, scaledWorldPos.xz) * blendedAxis.y;
+                zProjection = tex2D(grassTexture, scaledWorldPos.xy) * blendedAxis.z;
+                break;
+
+                default:
+                xProjection = tex2D(waterTexture, scaledWorldPos.yz) * blendedAxis.x;
+                yProjection = tex2D(waterTexture, scaledWorldPos.xz) * blendedAxis.y;
+                zProjection = tex2D(waterTexture, scaledWorldPos.xy) * blendedAxis.z;
+                break;
+            }
+            
+            return xProjection + yProjection + zProjection;
+        }
+
+        void surf (Input IN, inout SurfaceOutputStandard o) {
+
+            float heightPercentage = inverseLerp(minHeight, maxHeight, IN.worldPos.y);
             float3 blendedAxis = abs(IN.worldNormal);
             blendedAxis /= blendedAxis.x + blendedAxis.y + blendedAxis.z;
 
-            float3 xProjection = tex2D(waterTexture, scaledWorldPos.yz) * blendedAxis.x;
-            float3 yProjection = tex2D(waterTexture, scaledWorldPos.xz) * blendedAxis.y;
-            float3 zProjection = tex2D(waterTexture, scaledWorldPos.xy) * blendedAxis.z;
-            o.Albedo = xProjection + yProjection + zProjection;
+            for(int i = 0; i < 4; i++) {
+                float drawStrength = inverseLerp(-baseBlends[i]/2 - epsilon, baseBlends[i]/2, heightPercentage - baseStartHeights[i]);
+                float3 texApplicator = triplanar(IN.worldPos, texScales[i], blendedAxis, i);
+                o.Albedo = o.Albedo * (1 - drawStrength) + texApplicator * drawStrength;
+            }
         }
         ENDCG
     }

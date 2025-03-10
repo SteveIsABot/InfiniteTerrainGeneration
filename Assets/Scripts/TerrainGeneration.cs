@@ -17,6 +17,10 @@ public class TerrainGeneration : MonoBehaviour
     [SerializeField] public Material colourMat;
     [SerializeField] public bool useTex;
 
+    [Range(0, 1)] [SerializeField] public float[] baseStartHeights = new float[4];
+    [Range(0, 1)] [SerializeField] public float[] baseBlends = new float[4];
+    [SerializeField] public float[] texScales = new float[4];
+
     private List<Vector3> verticiesList = new List<Vector3>();
     private List<int> trianglePointList = new List<int>();
     private BoxCollider AABB;
@@ -94,6 +98,10 @@ public class TerrainGeneration : MonoBehaviour
         if(!useTex) {
             gradientToTexture();
             gridMat.SetTexture("colourGradient", colourGradientTex);
+        } else {
+            gridMat.SetFloatArray("baseStartHeights", baseStartHeights);
+            gridMat.SetFloatArray("baseBlends", baseBlends);
+            gridMat.SetFloatArray("texScales", texScales);
         }
     }
 
