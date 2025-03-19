@@ -27,9 +27,9 @@ Once there click on the Prefab named ***TerrainGrid*** to see it in unity's insp
 From there you can change the colours in the colour gradient, wether you want to use textures or not, and the height scale factor of the terrain.
 To adjust the textures you can change the values in ***Base Start Heights***, ***Base Blends*** ,and ***Tex Scales***.
 
-***Base Start Heights*** - Changes the height perecntage on where the texture starts from, i.e. 0 starts at the bottom, 0.5 starts at 50% of the terrains max height.
-***Base Blends*** - The percentage amount it blends into the next texture, i.e. 1 is a perfect graident blend while 0 is no blend between textures.
-***Tex Scales** - The scale for each texture to appear on the terrain.
+***Base Start Heights*** - Changes the height perecntage on where the texture starts from, i.e. 0 starts at the bottom, 0.5 starts at 50% of the terrains max height.  
+***Base Blends*** - The percentage amount it blends into the next texture, i.e. 1 is a perfect graident blend while 0 is no blend between textures.  
+***Tex Scales*** - The scale for each texture to appear on the terrain.  
 
 To change textures find the Material folder and click on ***TextureMat*** to view it in unity's inspector.
 Once there you can enter any new images you like, as long as they are in the project files, ideally in the Textures folder.
