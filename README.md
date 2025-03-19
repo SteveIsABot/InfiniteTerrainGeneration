@@ -2,7 +2,7 @@
 
 This project is a simulation that trys to generate infinite terrain.
 The terrain generation based on the direction and location of the camera.
-The project can be confidured to use textures or colours and change the amount of new terrain being generated.
+The project can be confidured to use textures or colours, change the amount of new terrain being generated, the amount of non-active terrain grids that exists when running the project.
 
 ## Perquisite To Run Project
 
