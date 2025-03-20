@@ -14,7 +14,6 @@ public class CameraMovement : MonoBehaviour
 
     void Start() {
         currentSpeed = mainSpeed;
-        Cursor.visible = false;
     }
 
     void Update() {
