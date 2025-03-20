@@ -37,4 +37,18 @@ Just drag and drop the new texture you would like to use for the previously exis
 
 ### Camera Configuration
 
+Once in Unity with the project loaded in, find the Game Object named ***Main Camera*** in the Hierarchy tab and click it to view it in the inspector.
+From there you can change the camera variables that controls it camera speed, and movement speed.
+
+***Main Speed*** - This controls the normal speed of the camera when not being boosted.  
+***Speed Booster*** - This controls the increase amount of the speed until it reaches max speed limit.  
+***Max Speed*** - This controls the max speed limit that the camera can reach.  
+***Cam Sens*** - This controls the camera sensitvity for looking around.  
+
 ### Terrain Controller Configuration
+
+Once in Unity with the project loaded in, find the Game Object named ***Terrain Manager*** in the Hierarchy tab and click it to view it in the inspector.
+Once there you can only change two varibles there which control the amount grids that can be spawned in, or stay around before getting deleted to make more space.
+
+***Max Active Grids*** - The max amount of grids that can be spawned up to. (There can be more girds in view than this amount).  
+***Max Non Active Grids*** - The max amount of grids that can exist when not in camera view. Once past the limit the furtherst away from camera grids are destroyed.  
