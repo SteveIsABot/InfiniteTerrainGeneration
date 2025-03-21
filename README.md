@@ -12,7 +12,7 @@ The project can be confidured to use textures or colours, change the amount of n
 
 1. Fork the project to your own repository.
 2. Pull project from your repository to your computer.
-3. Open up the untiy hub and click ***add project from disk**.
+3. Open up the untiy hub and click ***add project from disk***.
 4. Select the project folder that was pulled into your computer eariler and load project into unity.
 5. Once unity has loaded, click the play button to run project.
 
